@@ -37,6 +37,8 @@ export class BotFramework {
                 `[command used] ${msg.author?.username} (${msg.author_id}) in channel #${msg.channel?.name} (${msg.channel_id}) of server ${msg.channel?.server?.name} (${msg.channel?.server_id}) - `
                 + `${msg.content}`
             )
+            
+               if (typeof msg.content !== "string") return;
 
             try {
                 context.command.run(msg, context.args)
@@ -57,8 +59,8 @@ export class BotFramework {
         );
 
         if (!(msg.content as string).startsWith(this.prefix)) return values;
-
-        const args = (msg.content as string).substr(this.prefix.length).split(' ');
+        
+        const args = msg.content.toString().substr(this.prefix.length).split(' ');
         const commandName = args.shift();
         const command: Command = this.getCommand(commandName as string);
         values.command = command;
